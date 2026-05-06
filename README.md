@@ -41,7 +41,7 @@ These are *ideal* prerequisites, not hard requirements. Cloud alternatives will 
 ## Getting Started
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/Incept5/agentic-ai-workshop-mainz.git
 cd agentic-ai-workshop-mainz
 ```
 
