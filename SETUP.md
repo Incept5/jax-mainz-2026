@@ -93,7 +93,81 @@ python -m mlx_vlm.server \
 
 Other small VLMs worth grabbing: `mlx-community/SmolVLM-Instruct-bf16`, `mlx-community/gemma-3-4b-it-4bit`.
 
-### 2c. Bigger Models (Optional)
+### 2c. Verify Your Setup
+
+Run the matching test for whichever host you installed. A short German greeting confirms the model is loaded, the API is reachable, and tokens are flowing.
+
+**LM Studio**
+
+1. Open LM Studio, load one of the starter models.
+2. Go to the **Developer** tab and click **Start Server** (defaults to port `1234`).
+3. From a terminal:
+
+```bash
+curl http://localhost:1234/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{"messages": [{"role": "user", "content": "Say hello in German"}]}'
+```
+
+**Ollama**
+
+```bash
+ollama run qwen3.5-4b:q4_0 "Say hello in German"
+```
+
+Or via the HTTP API (Ollama runs on `11434` by default):
+
+```bash
+curl http://localhost:11434/api/generate -d '{
+  "model": "qwen3.5-4b:q4_0",
+  "prompt": "Say hello in German",
+  "stream": false
+}'
+```
+
+**oMLX**
+
+Start oMLX from the menu bar and load a model. It serves on `http://localhost:8000/v1`:
+
+```bash
+curl http://localhost:8000/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "Qwen3.5-4B-MLX-4bit",
+    "messages": [{"role": "user", "content": "Say hello in German"}]
+  }'
+```
+
+**llama.cpp**
+
+In one terminal, start the server (it'll download the model on first run):
+
+```bash
+llama-server -hf bartowski/Qwen3.5-4B-Instruct-GGUF
+```
+
+In a second terminal:
+
+```bash
+curl http://localhost:8080/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{"messages": [{"role": "user", "content": "Say hello in German"}]}'
+```
+
+**MLX-VLM**
+
+A vision-language model needs an image. This one-liner downloads a sample and asks the model to describe it:
+
+```bash
+python -m mlx_vlm.generate \
+  --model mlx-community/Qwen2.5-VL-3B-Instruct-4bit \
+  --image https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg \
+  --prompt "Describe this image in one short sentence"
+```
+
+If you see a sensible response in any of these, you're good to go.
+
+### 2d. Bigger Models (Optional)
 
 If you have the memory (typically a Mac with plenty of unified memory), also grab any of:
 
