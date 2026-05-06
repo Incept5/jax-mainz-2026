@@ -77,21 +77,24 @@ uv tool install mlx-vlm
 pip install mlx-vlm
 ```
 
-Models are pulled from the `mlx-community` org on Hugging Face the first time you use them. A couple of small VLMs that pair well with the workshop:
+Models are pulled from the `mlx-community` org on Hugging Face the first time you use them. Use the **vision variants** of the same model families we're running elsewhere in the workshop:
 
 ```bash
 # One-off generation against an image
 python -m mlx_vlm.generate \
-  --model mlx-community/Qwen2.5-VL-3B-Instruct-4bit \
+  --model mlx-community/Qwen3.5-VL-4B-MLX-4bit \
   --image path/to/image.jpg \
   --prompt "Describe this image"
 
 # Or run a server (OpenAI-compatible) for the demos
 python -m mlx_vlm.server \
-  --model mlx-community/Qwen2.5-VL-3B-Instruct-4bit
+  --model mlx-community/Qwen3.5-VL-4B-MLX-4bit
 ```
 
-Other small VLMs worth grabbing: `mlx-community/SmolVLM-Instruct-bf16`, `mlx-community/gemma-3-4b-it-4bit`.
+Other vision models worth grabbing (same families as the text starters):
+
+- `mlx-community/granite-4.1-vision-3b-mxfp4`
+- `mlx-community/gemma-4-vision-e4b-4bit`
 
 ### 2c. Verify Your Setup
 
@@ -160,7 +163,7 @@ A vision-language model needs an image. This one-liner downloads a sample and as
 
 ```bash
 python -m mlx_vlm.generate \
-  --model mlx-community/Qwen2.5-VL-3B-Instruct-4bit \
+  --model mlx-community/Qwen3.5-VL-4B-MLX-4bit \
   --image https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg \
   --prompt "Describe this image in one short sentence"
 ```
