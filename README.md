@@ -32,21 +32,11 @@ This workshop shows you how intelligent agent systems are developed using open s
 
 Participants should have a basic understanding of Generative AI and have already gained initial experience accessing AI models. Deep knowledge is not required. The workshop is especially valuable for those interested in **data sovereignty (GDPR), cost control, and avoiding vendor lock-in**.
 
-### Before You Arrive
+## Before You Arrive
 
-Bringing your laptop is encouraged. To hit the ground running:
+See **[SETUP.md](./SETUP.md)** for full prerequisites — Python, local model hosts (Ollama / LM Studio), starter models, Claude Code, and corporate-laptop notes.
 
-- Install [Ollama](https://ollama.ai) and/or [LM Studio](https://lmstudio.ai)
-- Pull a few small (4–8B) models, for example:
-  ```bash
-  ollama pull qwen3:4b
-  ollama pull mistral
-  ollama pull gemma3:4b
-  ```
-- Make sure you have a recent **JDK (Java 21+)** and Git installed
-- If you're on a corporate machine: try to get admin access and know how to disable your VPN if needed (not critical)
-
-This is **not mandatory** — cloud alternatives will also be demonstrated and API keys supplied on the day.
+These are *ideal* prerequisites, not hard requirements. Cloud alternatives will be demonstrated and API keys supplied on the day.
 
 ## Getting Started
 
