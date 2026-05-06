@@ -43,6 +43,56 @@ ollama pull granite4.1:3b
 ollama pull nemotron-3-nano:4b
 ```
 
+**llama.cpp:**
+
+Install the binary first:
+
+```bash
+# macOS / Linux (Homebrew)
+brew install llama.cpp
+
+# or build from source — see https://github.com/ggml-org/llama.cpp
+```
+
+Then pull and serve a GGUF model directly from Hugging Face. `llama-server` exposes an OpenAI-compatible API on `http://localhost:8080`:
+
+```bash
+# Search Hugging Face for a GGUF build of each starter model and run e.g.
+llama-server -hf bartowski/Qwen3.5-4B-Instruct-GGUF
+llama-server -hf bartowski/granite-4.1-3b-GGUF
+llama-server -hf bartowski/Nemotron-3-Nano-4B-GGUF
+```
+
+(Exact GGUF repo names vary — search `bartowski` or `ggml-org` on Hugging Face for the model you want. Add `--port 8081` etc. to run more than one in parallel.)
+
+**MLX-VLM** (Apple Silicon, vision-language models):
+
+Install with `uv` or `pip`:
+
+```bash
+# with uv (recommended)
+uv tool install mlx-vlm
+
+# or with pip
+pip install mlx-vlm
+```
+
+Models are pulled from the `mlx-community` org on Hugging Face the first time you use them. A couple of small VLMs that pair well with the workshop:
+
+```bash
+# One-off generation against an image
+python -m mlx_vlm.generate \
+  --model mlx-community/Qwen2.5-VL-3B-Instruct-4bit \
+  --image path/to/image.jpg \
+  --prompt "Describe this image"
+
+# Or run a server (OpenAI-compatible) for the demos
+python -m mlx_vlm.server \
+  --model mlx-community/Qwen2.5-VL-3B-Instruct-4bit
+```
+
+Other small VLMs worth grabbing: `mlx-community/SmolVLM-Instruct-bf16`, `mlx-community/gemma-3-4b-it-4bit`.
+
 ### 2c. Bigger Models (Optional)
 
 If you have the memory (typically a Mac with plenty of unified memory), also grab any of:
