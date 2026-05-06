@@ -15,16 +15,17 @@ We'll cover several models. The starter set below is small enough to run on almo
 
 ### 2a. Pick a Model Host
 
-You only need **one** of these. Both work on Mac, Linux, and Windows. If you install both, you'll have a choice on the day.
+You only need **one** of these. Install whichever fits your machine — if you install more than one, you'll have a choice on the day.
 
-- **LM Studio** — https://lmstudio.ai/download
-- **Ollama** — https://ollama.com/download
+- **LM Studio** — https://lmstudio.ai/download (Mac, Linux, Windows)
+- **Ollama** — https://ollama.com/download (Mac, Linux, Windows)
+- **oMLX** — https://omlx.ai/ (Apple Silicon Macs only — fast MLX-based inference, OpenAI/Anthropic-compatible API, menu-bar app)
 
 ### 2b. Pull Some Starter Models
 
 Pick the set that matches the host you installed.
 
-**LM Studio:**
+**LM Studio / oMLX** (both use MLX models on Apple Silicon):
 
 ```
 mlx-community/Qwen3.5-4B-MLX-4bit
