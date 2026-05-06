@@ -4,33 +4,64 @@ A one-day, hands-on workshop on **Building Intelligent AI Agents with Open Sourc
 
 Workshop page: https://jax.de/big-data-machine-learning/ai-agent-workshop/
 
-## Getting Started
+## About the Workshop
 
-Clone this repository and follow the exercise folders in order. Each exercise has its own README with setup instructions and goals.
+AI agents form the foundation of a completely new generation of applications — apps that, with the help of AI, not only answer questions but can autonomously complete tasks. They don't just generate text; they have access to tools and data through standardized protocols, enabling them to communicate with other systems and process entire business workflows. And all of this can be done individually or together in cross-functional agent teams.
+
+This workshop shows you how intelligent agent systems are developed using open source models and the Model Context Protocol (MCP), with a focus on local or private cloud deployment and the **Embabel framework** for enterprise-grade JVM applications. The course concentrates on open source models, but OpenAI equivalents will always be available — giving you the freedom to choose your deployment strategy. The workshop will use the very latest models, literally to the day, including both text and visual models.
+
+**Language note:** The workshop is conducted in English, but John has lived in Germany and is sympathetic to language differences. Many examples will be in German, and models will be chosen specifically with German output in mind.
+
+## Topics
+
+- How do agents work?
+- Agent patterns and scenarios
+- Overview of open source agent frameworks
+- Open source tool-calling models (Qwen, Mistral, Gemma)
+- Local deployment with Ollama, LM Studio, MLX, vLLM, and cloud alternatives
+- Function calling with open source models (with OpenAI comparisons)
+- Data integration with Agentic RAG using open embeddings
+- File and document processing with local models
+- Model Context Protocol (MCP) — the standardization layer
+- Building custom MCP servers and using community tools
+- Multi-agent teams with heterogeneous model selection
+- Introduction to the Embabel framework for JVM-based agents
+- Q&A and discussion throughout the day
+
+## Target Audience & Requirements
+
+Participants should have a basic understanding of Generative AI and have already gained initial experience accessing AI models. Deep knowledge is not required. The workshop is especially valuable for those interested in **data sovereignty (GDPR), cost control, and avoiding vendor lock-in**.
+
+### Before You Arrive
+
+Bringing your laptop is encouraged. To hit the ground running:
+
+- Install [Ollama](https://ollama.ai) and/or [LM Studio](https://lmstudio.ai)
+- Pull a few small (4–8B) models, for example:
+  ```bash
+  ollama pull qwen3:4b
+  ollama pull mistral
+  ollama pull gemma3:4b
+  ```
+- Make sure you have a recent **JDK (Java 21+)** and Git installed
+- If you're on a corporate machine: try to get admin access and know how to disable your VPN if needed (not critical)
+
+This is **not mandatory** — cloud alternatives will also be demonstrated and API keys supplied on the day.
+
+## Getting Started
 
 ```bash
 git clone <repository-url>
 cd agentic-ai-workshop-mainz
 ```
 
-## Prerequisites
-
-Detailed prerequisites will be published before the workshop. In the meantime, please make sure you have:
-
-- A laptop you can install software on
-- A recent JDK (Java 21+ recommended)
-- [Ollama](https://ollama.ai) installed and running locally
-- Git and your editor / IDE of choice
-
-## Exercises
-
-Exercises will be added to this repository in the run-up to the workshop. Pull the latest changes before the session starts.
+Exercises will be added to this repository in the run-up to the workshop. **Pull the latest changes before the session starts.**
 
 ## Workshop Format
 
-- **Duration**: 1 day
-- **Style**: Hands-on, build-along
-- **Focus**: Open-source models, local inference, MCP, practical agent patterns
+- **Duration:** 1 day
+- **Style:** Hands-on, build-along
+- **Focus:** Open-source models, local inference, MCP, multi-agent teams, Embabel on the JVM
 
 ## License
 
