@@ -20,6 +20,8 @@ You only need **one** of these. Install whichever fits your machine — if you i
 - **LM Studio** — https://lmstudio.ai/download (Mac, Linux, Windows)
 - **Ollama** — https://ollama.com/download (Mac, Linux, Windows)
 - **oMLX** — https://omlx.ai/ (Apple Silicon Macs only — fast MLX-based inference, OpenAI/Anthropic-compatible API, menu-bar app)
+- **llama.cpp** — https://github.com/ggml-org/llama.cpp (Mac, Linux, Windows — bare-metal C/C++ inference, GGUF models, ships with `llama-server` for an OpenAI-compatible HTTP API)
+- **MLX-VLM** — https://github.com/Blaizzy/mlx-vlm (Apple Silicon only — for vision-language models; we'll use this for the visual-model demos)
 
 ### 2b. Pull Some Starter Models
 
