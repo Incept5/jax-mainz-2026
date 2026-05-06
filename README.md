@@ -41,8 +41,8 @@ These are *ideal* prerequisites, not hard requirements. Cloud alternatives will 
 ## Getting Started
 
 ```bash
-git clone https://github.com/Incept5/agentic-ai-workshop-mainz.git
-cd agentic-ai-workshop-mainz
+git clone https://github.com/Incept5/jax-mainz-2026.git
+cd jax-mainz-2026
 ```
 
 Exercises will be added to this repository in the run-up to the workshop. **Pull the latest changes before the session starts.**
