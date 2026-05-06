@@ -38,7 +38,7 @@ mlx-community/NVIDIA-Nemotron-3-Nano-4B-4bit
 **Ollama:**
 
 ```bash
-ollama pull qwen3.5-4b:q4_0
+ollama pull qwen3.5:4b
 ollama pull granite4.1:3b
 ollama pull nemotron-3-nano:4b
 ```
@@ -130,11 +130,30 @@ curl http://localhost:11434/api/generate -d '{
 
 **oMLX**
 
-Start oMLX from the menu bar and load a model. It serves on `http://localhost:8000/v1`:
+Start oMLX from the menu bar and load a model. It serves on `http://localhost:8000/v1`.
+
+> **API key note:** oMLX guards the server with an API key by default — there's no signup or "get your key" flow, the key is whatever **you** decide it should be. Two ways to handle it:
+>
+> - **Easiest for the workshop:** open the admin panel (http://localhost:8000/admin) and turn on the "skip verification on localhost" / no-auth-for-localhost option in global settings.
+> - **Or set your own:** start the server with `--api-key dev-key` (any string works) and pass it as `Authorization: Bearer dev-key` on every request.
+
+With auth disabled for localhost:
 
 ```bash
 curl http://localhost:8000/v1/chat/completions \
   -H "Content-Type: application/json" \
+  -d '{
+    "model": "Qwen3.5-4B-MLX-4bit",
+    "messages": [{"role": "user", "content": "Say hello in German"}]
+  }'
+```
+
+With your own API key:
+
+```bash
+curl http://localhost:8000/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer dev-key" \
   -d '{
     "model": "Qwen3.5-4B-MLX-4bit",
     "messages": [{"role": "user", "content": "Say hello in German"}]
