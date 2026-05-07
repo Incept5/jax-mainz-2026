@@ -39,3 +39,6 @@ npm-debug.log*
 .env.local
 *.local
 secrets/
+
+# Vector DBs
+chroma_db/

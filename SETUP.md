@@ -41,7 +41,10 @@ mlx-community/NVIDIA-Nemotron-3-Nano-4B-4bit
 ollama pull qwen3.5:4b
 ollama pull granite4.1:3b
 ollama pull nemotron-3-nano:4b
+ollama pull embeddinggemma
 ```
+
+`embeddinggemma` is an embedding model (~622 MB) used by the RAG demo in `05-rag/` — the chat models above can't produce embeddings, so this one is needed alongside them.
 
 **llama.cpp:**
 
@@ -95,6 +98,17 @@ Other vision models worth grabbing (same families as the text starters):
 
 - `mlx-community/granite-4.1-vision-3b-mxfp4`
 - `mlx-community/gemma-4-vision-e4b-4bit`
+
+**Tokenizer model (for `02-llm-basics/simple_token_test.py`):**
+
+The tokenization demo uses Hugging Face `transformers` to load a tokenizer directly — no model host required. Pre-download it so the demo runs offline:
+
+```bash
+pip install -U transformers huggingface_hub
+hf download Qwen/Qwen3.5-0.8B
+```
+
+(`AutoTokenizer.from_pretrained("Qwen/Qwen3.5-0.8B")` will also fetch it on first run if you skip this step.)
 
 ### 2c. Verify Your Setup
 
