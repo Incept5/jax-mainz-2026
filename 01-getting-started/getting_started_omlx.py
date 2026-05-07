@@ -7,5 +7,6 @@ response = requests.post(
           "messages": [{"role": "user", "content": "Hello"}]}
 )
 
+response.raise_for_status()
 data = response.json()
 print(data["choices"][0]["message"]["content"].strip())

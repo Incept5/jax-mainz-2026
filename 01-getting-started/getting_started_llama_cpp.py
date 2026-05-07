@@ -1,7 +1,7 @@
 import requests
 
 response = requests.post(
-    "http://localhost:8080/v1/chat/completions",
+    "http://localhost:8081/v1/chat/completions",
     json={"messages": [{"role": "user", "content": "Hello"}]}
 )
 

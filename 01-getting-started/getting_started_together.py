@@ -7,7 +7,7 @@ load_dotenv()
 response = requests.post(
     "https://api.together.xyz/v1/chat/completions",
     headers={"Authorization": f"Bearer {os.environ['TOGETHER_API_KEY']}"},
-    json={"model": "meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
+    json={"model": "Qwen/Qwen3.5-9B",
           "messages": [{"role": "user", "content": "Hello"}]}
 )
 
