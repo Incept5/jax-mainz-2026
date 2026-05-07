@@ -115,14 +115,14 @@ curl http://localhost:1234/v1/chat/completions \
 **Ollama**
 
 ```bash
-ollama run qwen3.5-4b:q4_0 "Say hello in German"
+ollama run qwen3.5:4b "Say hello in German"
 ```
 
 Or via the HTTP API (Ollama runs on `11434` by default):
 
 ```bash
 curl http://localhost:11434/api/generate -d '{
-  "model": "qwen3.5-4b:q4_0",
+  "model": "qwen3.5:4b",
   "prompt": "Say hello in German",
   "stream": false
 }'
@@ -193,8 +193,8 @@ If you see a sensible response in any of these, you're good to go.
 
 If you have the memory (typically a Mac with plenty of unified memory), also grab any of:
 
-- `Qwen3.5-9B`, `Qwen3.6-27B`, `Qwen3.6-35B`
-- `gemma-4-e2b`, `gemma-4-e4b` (the new Gemma-4 models)
+- `Qwen3.5:9B`, `Qwen3.6:27B`, `Qwen3.6:35B`
+- `gemma-4:e2b`, `gemma-4:e4b` (the new Gemma-4 models)
 
 We'll cover the details of all these models and their variations during the workshop.
 
