@@ -40,5 +40,8 @@ npm-debug.log*
 *.local
 secrets/
 
+# Teacher-only notes (not for students)
+TEACHER_NOTES.md
+
 # Vector DBs
 chroma_db/
