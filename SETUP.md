@@ -212,6 +212,72 @@ If you have the memory (typically a Mac with plenty of unified memory), also gra
 
 We'll cover the details of all these models and their variations during the workshop.
 
+### 2e. Cloud Alternative — Use OpenAI Instead
+
+If you already have an OpenAI account/API key, you can skip the local model host entirely and run every exercise against `api.openai.com`. The whole workshop should cost a few cents on `gpt-4o-mini`.
+
+**Set your key** (the exercises read it from the environment, or from a `.env` at the project root via `python-dotenv`):
+
+```bash
+export OPENAI_API_KEY="sk-..."
+```
+
+**Pick a model:**
+
+- Chat: `gpt-4o-mini` (cheap, fast, capable enough for everything here). `gpt-5-nano` if your account has it.
+- Embeddings (used by `05-rag/`): `text-embedding-3-small` — 1536 dims, very cheap.
+- Tool calling (used by `06-tool-calling/`, `07-mcp/`): any chat model above supports tools.
+
+**Quick verify:**
+
+```bash
+curl https://api.openai.com/v1/chat/completions \
+  -H "Authorization: Bearer $OPENAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-4o-mini",
+    "messages": [{"role": "user", "content": "Say hello in German"}]
+  }'
+```
+
+A working starter is checked in at `01-getting-started/getting_started_openai.py`. Run that first to confirm your key works end-to-end.
+
+**Adapting the other exercises**
+
+The exercise scripts default to Ollama's *native* API (`http://localhost:11434/api/generate` or `/api/chat`). The change to point them at OpenAI is the same everywhere:
+
+| Replace | With |
+| --- | --- |
+| URL `http://localhost:11434/api/generate` or `/api/chat` | `https://api.openai.com/v1/chat/completions` |
+| (no auth header) | `Authorization: Bearer $OPENAI_API_KEY` |
+| `model` value (e.g. `qwen3.5:4b`) | `gpt-4o-mini` |
+| `{"prompt": "..."}` (Ollama `/api/generate`) | `{"messages": [{"role":"user","content":"..."}]}` |
+| Response field `data["response"]` | `data["choices"][0]["message"]["content"]` |
+| Ollama-only fields (`think`, `options.num_ctx`, `stream: false`) | drop them |
+
+`getting_started_together.py` already follows this exact shape — copy it as a template if it helps.
+
+**Per-folder notes:**
+
+- **`01-getting-started/`** — use `getting_started_openai.py`.
+- **`02-llm-basics/`** — `simple_token_test.py` uses Hugging Face's tokenizer locally; no model host needed. `cosine_similarity.py` calls Ollama's `/api/embeddings` — swap that to OpenAI's `/v1/embeddings` with `text-embedding-3-small` and read the result from `data["data"][0]["embedding"]`.
+- **`03-structured-output/`** — `analyse_sentiment_01.py` and `analyse_sentiment_02.py`: replace the `requests.post(...)` block per the table above. `formatted_response_example.py` uses the `ollama` Python library with `format="json"` — for OpenAI use the official SDK with `response_format`:
+
+  ```python
+  from openai import OpenAI
+  client = OpenAI()
+  resp = client.chat.completions.create(
+      model="gpt-4o-mini",
+      messages=[{"role": "user", "content": prompt}],
+      response_format={"type": "json_object"},
+  )
+  print(resp.choices[0].message.content)
+  ```
+
+- **`05-rag/`** — replace `OllamaClient` with calls to OpenAI's `/v1/embeddings` and `/v1/chat/completions`. Use `text-embedding-3-small` and drop the `task: search result | query: …` / `title: none | text: …` prefixes — those are EmbeddingGemma-specific and OpenAI doesn't need them. The chunking, cosine similarity, and ChromaDB code is unchanged. `grimm_fairy_tales_rag_demo.py` uses the `ollama` library directly, so it needs the bigger rewrite — easiest to mirror the structure of `rag_alice_in_wonderland.py` after you've ported that one.
+- **`06-tool-calling/simple_tool_calling.py`** — Ollama's tool-calling format is copied from OpenAI, so the `tools` array and the tool-result message shape pass through unchanged. Just switch the URL, auth header, model, and response parsing per the table.
+- **`07-mcp/test_mcp_client_ollama.py`** — same story: drop in OpenAI's chat completions endpoint and auth, keep the MCP-tool conversion as-is. A renamed `test_mcp_client_openai.py` is a fine starting point.
+
 ## 3. Coding Agents
 
 We'll run a few demos with **Claude Code** — not only against Anthropic models, but also against:
