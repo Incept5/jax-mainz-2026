@@ -274,6 +274,15 @@ The exercise scripts default to Ollama's *native* API (`http://localhost:11434/a
   print(resp.choices[0].message.content)
   ```
 
+  The Kaggle sentiment demo ships in four variants — same prompt, same dataset, different host. Pick the one that matches your setup:
+
+  | Script | Host | Model |
+  | --- | --- | --- |
+  | `analyse_sentiment_kaggle.py` | (loads dataset only — no LLM call) | — |
+  | `analyse_sentiment_kaggle_ollama.py` | Ollama on `:11434` | `qwen3.5:4b` |
+  | `analyse_sentiment_kaggle_lmstudio.py` | LM Studio on `:1234` | `qwen3.5-4b@q4_0` (edit to match what you have loaded) |
+  | `analyse_sentiment_kaggle_together.py` | Together AI cloud | `Qwen/Qwen3.5-9B` |
+
 - **`05-rag/`** — replace `OllamaClient` with calls to OpenAI's `/v1/embeddings` and `/v1/chat/completions`. Use `text-embedding-3-small` and drop the `task: search result | query: …` / `title: none | text: …` prefixes — those are EmbeddingGemma-specific and OpenAI doesn't need them. The chunking, cosine similarity, and ChromaDB code is unchanged. `grimm_fairy_tales_rag_demo.py` uses the `ollama` library directly, so it needs the bigger rewrite — easiest to mirror the structure of `rag_alice_in_wonderland.py` after you've ported that one.
 - **`06-tool-calling/simple_tool_calling.py`** — Ollama's tool-calling format is copied from OpenAI, so the `tools` array and the tool-result message shape pass through unchanged. Just switch the URL, auth header, model, and response parsing per the table.
 - **`07-mcp/test_mcp_client_ollama.py`** — same story: drop in OpenAI's chat completions endpoint and auth, keep the MCP-tool conversion as-is. A renamed `test_mcp_client_openai.py` is a fine starting point.
