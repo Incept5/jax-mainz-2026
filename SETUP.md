@@ -278,6 +278,30 @@ The exercise scripts default to Ollama's *native* API (`http://localhost:11434/a
 - **`06-tool-calling/simple_tool_calling.py`** — Ollama's tool-calling format is copied from OpenAI, so the `tools` array and the tool-result message shape pass through unchanged. Just switch the URL, auth header, model, and response parsing per the table.
 - **`07-mcp/test_mcp_client_ollama.py`** — same story: drop in OpenAI's chat completions endpoint and auth, keep the MCP-tool conversion as-is. A renamed `test_mcp_client_openai.py` is a fine starting point.
 
+### 2f. Cloud Alternative — Together AI (Workshop Key Provided)
+
+If you don't have an OpenAI account and can't run a local host, use **Together AI**. A throwaway key is provided for the workshop:
+
+```
+TOGETHER_API_KEY=tgp_v1_1Vz3vT2d4JjMnJQX7d8g_8PZbu0yxLP-8PrpcWFVJUA
+```
+
+> This key is workshop-only and **will be rotated/deleted after the talk**. Don't build anything important on top of it.
+
+Drop it into a `.env` at the project root (the scripts use `python-dotenv`):
+
+```bash
+echo 'TOGETHER_API_KEY=tgp_v1_1Vz3vT2d4JjMnJQX7d8g_8PZbu0yxLP-8PrpcWFVJUA' > .env
+```
+
+Then run the starter:
+
+```bash
+python 01-getting-started/getting_started_together.py
+```
+
+Together's API is OpenAI-compatible, so the per-folder advice in **2e** applies verbatim — just change the URL to `https://api.together.xyz/v1/chat/completions`, send the key as `Authorization: Bearer $TOGETHER_API_KEY`, and pick a Together-hosted model (e.g. `Qwen/Qwen3.5-9B`). For embeddings (used by `05-rag/`), Together hosts e.g. `togethercomputer/m2-bert-80M-8k-retrieval` via `/v1/embeddings`.
+
 ## 3. Coding Agents
 
 We'll run a few demos with **Claude Code** — not only against Anthropic models, but also against:
