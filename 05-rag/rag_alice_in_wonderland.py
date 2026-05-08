@@ -28,10 +28,10 @@ class OllamaClient:
         else:
             formatted_text = f"title: none | text: {text}"
 
-        data = {"model": EMBEDDING_MODEL, "prompt": formatted_text}
-        response = requests.post(f"{self.base_url}/embeddings", json=data, timeout=30)
+        data = {"model": EMBEDDING_MODEL, "input": formatted_text}
+        response = requests.post(f"{self.base_url}/embed", json=data, timeout=30)
         response.raise_for_status()
-        return np.array(response.json()["embedding"])
+        return np.array(response.json()["embeddings"][0])
 
     def generate_response(self, prompt: str) -> str:
         data = {

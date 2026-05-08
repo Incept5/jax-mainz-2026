@@ -3,9 +3,9 @@ from tabulate import tabulate
 import requests
 
 def get_ollama_embedding(text):
-    response = requests.post("http://localhost:11434/api/embeddings",
-                             json={"model": "embeddinggemma", "prompt": text})
-    return response.json()["embedding"]
+    response = requests.post("http://localhost:11434/api/embed",
+                             json={"model": "embeddinggemma", "input": text})
+    return response.json()["embeddings"][0]
 
 def main():
     words = ["tea", "coffee", "mud", "dirt"]
