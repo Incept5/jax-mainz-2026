@@ -1,27 +1,37 @@
 import ollama
 import json
+import sys
 
 
 def generate_formatted_response(prompt):
     try:
-        response = ollama.generate(
+        chunks = []
+        for chunk in ollama.generate(
             model="qwen3.5:4b",
             prompt=prompt,
             format="json",
             think=False,
+            stream=True,
             options={
                 "num_ctx": 8192,
                 "temperature": 0.3
             }
-        )
-        return response['response']
+        ):
+            piece = chunk.get('response', '')
+            chunks.append(piece)
+            sys.stdout.write(piece)
+            sys.stdout.flush()
+        sys.stdout.write("\n")
+        sys.stdout.flush()
+        return ''.join(chunks)
     except Exception as e:
         print("Error:", e)
         return None
 
 
 def main():
-    prompt = """List the numbers from 1 to 10 and their names in
+    prompt = """/no_think
+    List the numbers from 1 to 10 and their names in
     English, French, German, Dutch, Chinese, Russian, Arabic, Polish, Hungarian.
     Provide the output in this exact JSON format:
     {
@@ -42,11 +52,14 @@ def main():
       ]
     }"""
 
+    print("--- streaming response ---")
     response = generate_formatted_response(prompt)
+    print("--- end of stream ---")
 
     try:
         if response:
             parsed = json.loads(response)
+            print("\nParsed JSON:")
             print(json.dumps(parsed, indent=2, ensure_ascii=False))
     except json.JSONDecodeError:
         print("Received non-JSON response:")
