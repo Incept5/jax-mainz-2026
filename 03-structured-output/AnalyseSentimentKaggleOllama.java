@@ -8,9 +8,9 @@
 //
 // On first run, downloads the Trump-tweets dataset from Kaggle into
 // ~/.cache/kagglehub/ (same location kagglehub uses, so the Python and Java
-// versions share a cache). Needs Kaggle credentials in ~/.kaggle/kaggle.json
-// or in KAGGLE_USERNAME / KAGGLE_KEY env vars — get a token from
-// https://www.kaggle.com/settings/account.
+// versions share a cache). The dataset is public and downloads anonymously.
+// Kaggle credentials are picked up if present (KAGGLE_USERNAME / KAGGLE_KEY
+// env vars, or ~/.kaggle/kaggle.json) but are not required.
 //
 // Ollama must be running locally with the qwen3.5:4b model pulled.
 
@@ -114,14 +114,11 @@ public class AnalyseSentimentKaggleOllama {
         }
     }
 
-    // Mirror what kagglehub does: hit the Kaggle dataset-download API with basic
-    // auth, follow the redirect to the CDN, save the zip into the same cache
-    // tree kagglehub uses, then extract it.
+    // Mirror what kagglehub does: hit the Kaggle dataset-download API (anonymously
+    // for public datasets, with basic auth if creds are available), follow the
+    // redirect to the CDN, save the zip into the same cache tree kagglehub uses,
+    // then extract it.
     static Path downloadKaggleCsv() throws Exception {
-        String[] creds = readKaggleCredentials();
-        String authHeader = "Basic " + Base64.getEncoder()
-                .encodeToString((creds[0] + ":" + creds[1]).getBytes());
-
         Path dest = Paths.get(System.getProperty("user.home"), ".cache", "kagglehub",
                 "datasets", "austinreese", "trump-tweets", "versions", "1");
         Files.createDirectories(dest);
@@ -131,16 +128,15 @@ public class AnalyseSentimentKaggleOllama {
         HttpClient client = HttpClient.newBuilder()
                 .followRedirects(HttpClient.Redirect.ALWAYS)
                 .build();
-        HttpRequest req = HttpRequest.newBuilder(url)
-                .header("Authorization", authHeader)
-                .GET()
-                .build();
+        HttpRequest.Builder reqBuilder = HttpRequest.newBuilder(url).GET();
+        String authHeader = optionalKaggleAuthHeader();
+        if (authHeader != null) reqBuilder.header("Authorization", authHeader);
 
-        HttpResponse<Path> resp = client.send(req, HttpResponse.BodyHandlers.ofFile(zip));
+        HttpResponse<Path> resp = client.send(reqBuilder.build(), HttpResponse.BodyHandlers.ofFile(zip));
         if (resp.statusCode() != 200) {
             Files.deleteIfExists(zip);
             throw new RuntimeException("Kaggle download failed: HTTP " + resp.statusCode()
-                    + " (check credentials and dataset slug '" + KAGGLE_DATASET + "')");
+                    + " for dataset '" + KAGGLE_DATASET + "'");
         }
 
         System.out.println("Extracting archive...");
@@ -161,25 +157,21 @@ public class AnalyseSentimentKaggleOllama {
         return csv;
     }
 
-    // Prefer KAGGLE_USERNAME / KAGGLE_KEY env vars, fall back to ~/.kaggle/kaggle.json.
-    static String[] readKaggleCredentials() throws Exception {
+    // Returns "Basic <base64>" if Kaggle creds are available (env vars or
+    // ~/.kaggle/kaggle.json), otherwise null. Public datasets don't need auth.
+    static String optionalKaggleAuthHeader() throws Exception {
         String username = System.getenv("KAGGLE_USERNAME");
         String key = System.getenv("KAGGLE_KEY");
         if (username == null || key == null) {
             Path file = Paths.get(System.getProperty("user.home"), ".kaggle", "kaggle.json");
-            if (!Files.exists(file)) {
-                throw new RuntimeException("Kaggle credentials not found. Set KAGGLE_USERNAME and "
-                        + "KAGGLE_KEY env vars, or save a token at " + file
-                        + " (get one at https://www.kaggle.com/settings/account).");
+            if (Files.exists(file)) {
+                String json = Files.readString(file);
+                if (username == null) username = extractJsonField(json, "username");
+                if (key == null) key = extractJsonField(json, "key");
             }
-            String json = Files.readString(file);
-            if (username == null) username = extractJsonField(json, "username");
-            if (key == null) key = extractJsonField(json, "key");
         }
-        if (username == null || username.isEmpty() || key == null || key.isEmpty()) {
-            throw new RuntimeException("Kaggle credentials are missing username or key.");
-        }
-        return new String[] {username, key};
+        if (username == null || username.isEmpty() || key == null || key.isEmpty()) return null;
+        return "Basic " + Base64.getEncoder().encodeToString((username + ":" + key).getBytes());
     }
 
     // Reads the "content" column from each CSV row. Handles quoted fields and
